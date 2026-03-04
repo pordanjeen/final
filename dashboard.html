@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard · StonkStock</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="inup.css">
+    <link rel="stylesheet" href="style-custom.css">
+    <style>
+        :root {
+            --bg: #f6f8fa;
+            --card-bg: #ffffff;
+            --border: #d0d7de;
+            --text-main: #24292f;
+            --text-secondary: #57606a;
+            --green: #2da44e;
+            --green-light: #dafbe1;
+            --red: #da3633;
+            --red-light: #ffebe6;
+            --link: #0969da;
+            --gold: #d4af37;
+            --dark: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, white 0%, #f9f9f9 100%);
+            border-bottom: 2px solid var(--gold);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-header i {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--green);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 25px;
+            width: 200px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 4px rgba(45, 164, 78, 0.1);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background: var(--green-light);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Watchlist Section */
+        .watchlist-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+        }
+
+        .section-title i {
+            color: var(--gold);
+            font-size: 24px;
+        }
+
+        .watchlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stock-card {
+            background: linear-gradient(135deg, white 0%, #f9f9f9 100%);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stock-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green) 0%, var(--gold) 100%);
+        }
+
+        .stock-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.2);
+            transform: translateY(-8px);
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .stock-symbol {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--dark);
+        }
+
+        .stock-price {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .stock-change {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stock-change.up {
+            color: var(--green);
+            background: var(--green-light);
+            padding: 4px 10px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .stock-change.down {
+            color: var(--red);
+            background: var(--red-light);
+            padding: 4px 10px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        /* News Section */
+        .news-section {
+            margin-bottom: 40px;
+        }
+
+        .news-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .news-card {
+            background: white;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .news-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.2);
+            transform: translateY(-8px);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 56px;
+        }
+
+        .news-image.usa {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .news-image.europe {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .news-image.world {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-category {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .news-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            color: var(--dark);
+        }
+
+        .news-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .impact-badge {
+            background: linear-gradient(135deg, var(--green-light) 0%, #dafbe1 100%);
+            color: var(--green);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .impact-badge.high {
+            background: linear-gradient(135deg, var(--red-light) 0%, #ffebe6 100%);
+            color: var(--red);
+        }
+
+        /* Region Sections */
+        .region-section {
+            margin-bottom: 48px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .section-header i {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--green) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header h2 {
+            color: var(--dark);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Economic Indicators */
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .indicator-card {
+            background: linear-gradient(135deg, white 0%, #f9f9f9 100%);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .indicator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green) 0%, var(--gold) 100%);
+        }
+
+        .indicator-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.2);
+            transform: translateY(-6px);
+        }
+
+        .indicator-name {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .indicator-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .indicator-change {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .indicator-change.positive {
+            color: var(--green);
+        }
+
+        .indicator-change.negative {
+            color: var(--red);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .footer a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .header-left,
+            .header-right {
+                width: 100%;
+            }
+
+            .watchlist-grid,
+            .news-container {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dashboard">
+    <!-- Navbar -->
+    <nav class="main-nav glass-effect">
+        <a href="home.html" class="nav-logo"><i class="fas fa-chart-line"></i> StonkStock</a>
+        <div class="nav-links">
+            <a href="home.html" class="nav-item"><i class="fas fa-home"></i> Home</a>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+            <a href="trading.html" class="nav-item"><i class="fas fa-exchange-alt"></i> Trading</a>
+            <a href="cash.html" class="nav-item"><i class="fas fa-wallet"></i> Wallet</a>
+        </div>
+        <div class="nav-user">
+            <span id="display-username"></span>
+            <button onclick="handleLogout()" class="btn-logout-minimal"><i class="fas fa-sign-out-alt"></i>
+                Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Portfolio Section -->
+        <div class="portfolio-section">
+            <div class="section-title">
+                <i class="fas fa-briefcase" style="color: var(--gold);"></i>
+                💼 My Portfolio
+            </div>
+            <div class="portfolio-summary" id="portfolio-summary">
+                <div class="summary-card">
+                    <div class="summary-label">Total Equity</div>
+                    <div class="summary-value" id="total-equity">$25,000.00</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Today's P/L</div>
+                    <div class="summary-value" id="total-pl">+$0.00</div>
+                </div>
+            </div>
+            <div class="holding-list" id="holding-list" style="margin-top: 20px;"></div>
+        </div>
+        <!-- Watchlist Section -->
+        <div class="watchlist-section" id="watchlist">
+            <div class="section-title">
+                <i class="fas fa-star" style="color: var(--green);"></i>
+                Your Watchlist
+            </div>
+            <div class="watchlist-grid">
+                <div class="stock-card">
+                    <div class="stock-header">
+                        <div class="stock-symbol">AAPL</div>
+                        <i class="fas fa-star" style="color: var(--green);"></i>
+                    </div>
+                    <div class="stock-price">$195.42</div>
+                    <div class="stock-change up">
+                        <i class="fas fa-arrow-up"></i> +2.45%
+                    </div>
+                </div>
+
+                <div class="stock-card">
+                    <div class="stock-header">
+                        <div class="stock-symbol">MSFT</div>
+                        <i class="fas fa-star" style="color: var(--green);"></i>
+                    </div>
+                    <div class="stock-price">$412.89</div>
+                    <div class="stock-change up">
+                        <i class="fas fa-arrow-up"></i> +1.82%
+                    </div>
+                </div>
+
+                <div class="stock-card">
+                    <div class="stock-header">
+                        <div class="stock-symbol">GOOGL</div>
+                        <i class="fas fa-star" style="color: var(--green);"></i>
+                    </div>
+                    <div class="stock-price">$142.56</div>
+                    <div class="stock-change down">
+                        <i class="fas fa-arrow-down"></i> -0.95%
+                    </div>
+                </div>
+
+                <div class="stock-card">
+                    <div class="stock-header">
+                        <div class="stock-symbol">TSLA</div>
+                        <i class="fas fa-star" style="color: var(--green);"></i>
+                    </div>
+                    <div class="stock-price">$248.67</div>
+                    <div class="stock-change up">
+                        <i class="fas fa-arrow-up"></i> +3.21%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USA Economy Section -->
+        <div class="region-section">
+            <div class="section-header">
+                <i class="fas fa-flag-usa"></i>
+                <h2 style="font-size: 20px; font-weight: 600;">USA Economy</h2>
+            </div>
+
+            <div class="indicators-grid">
+                <div class="indicator-card">
+                    <div class="indicator-name">S&P 500 Index</div>
+                    <div class="indicator-value">5,892.45</div>
+                    <div class="indicator-change positive">
+                        <i class="fas fa-arrow-up"></i> +1.23% Today
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">Unemployment Rate</div>
+                    <div class="indicator-value">3.4%</div>
+                    <div class="indicator-change negative">
+                        <i class="fas fa-arrow-up"></i> +0.1% vs last month
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">Inflation Rate (CPI)</div>
+                    <div class="indicator-value">3.2%</div>
+                    <div class="indicator-change positive">
+                        <i class="fas fa-arrow-down"></i> -0.3% vs last month
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">Fed Funds Rate</div>
+                    <div class="indicator-value">4.75%</div>
+                    <div class="indicator-change">No change this period</div>
+                </div>
+            </div>
+
+            <div class="news-container">
+                <div class="news-card">
+                    <div class="news-image usa">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">USA Economy</div>
+                        <div class="news-title">Fed Maintains Interest Rates Steady</div>
+                        <div class="news-description">The Federal Reserve decided to keep interest rates unchanged at
+                            4.75%, citing persistent inflation concerns while noting economic resilience.</div>
+                        <div class="news-meta">
+                            <span>2 hours ago</span>
+                            <span class="impact-badge">Medium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image usa">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">USA Economy</div>
+                        <div class="news-title">Tech Giants Report Strong Q4 Earnings</div>
+                        <div class="news-description">Major technology companies exceeded analyst expectations with
+                            robust earnings driven by AI initiative investments and cloud services growth.</div>
+                        <div class="news-meta">
+                            <span>4 hours ago</span>
+                            <span class="impact-badge">High</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image usa">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">USA Economy</div>
+                        <div class="news-title">Manufacturing Sector Shows Expansion</div>
+                        <div class="news-description">The ISM Manufacturing Index rose to 52.8, indicating expansion for
+                            the first time in eight months, boosting market sentiment.</div>
+                        <div class="news-meta">
+                            <span>6 hours ago</span>
+                            <span class="impact-badge">Medium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Europe Economy Section -->
+        <div class="region-section">
+            <div class="section-header">
+                <i class="fas fa-flag" style="color: #4facfe;"></i>
+                <h2 style="font-size: 20px; font-weight: 600;">Europe Economy</h2>
+            </div>
+
+            <div class="indicators-grid">
+                <div class="indicator-card">
+                    <div class="indicator-name">DAX Index (Germany)</div>
+                    <div class="indicator-value">18,750.32</div>
+                    <div class="indicator-change positive">
+                        <i class="fas fa-arrow-up"></i> +0.85% Today
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">FTSE 100 (UK)</div>
+                    <div class="indicator-value">7,945.18</div>
+                    <div class="indicator-change positive">
+                        <i class="fas fa-arrow-up"></i> +0.42% Today
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">CAC 40 (France)</div>
+                    <div class="indicator-value">7,635.42</div>
+                    <div class="indicator-change negative">
+                        <i class="fas fa-arrow-down"></i> -0.23% Today
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">ECB Interest Rate</div>
+                    <div class="indicator-value">4.50%</div>
+                    <div class="indicator-change">Last cut: Dec 2024</div>
+                </div>
+            </div>
+
+            <div class="news-container">
+                <div class="news-card">
+                    <div class="news-image europe">
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Europe Economy</div>
+                        <div class="news-title">ECB Signals Potential Rate Cuts in 2026</div>
+                        <div class="news-description">European Central Bank hints at possible interest rate reductions
+                            if inflation continues its downward trajectory in the coming quarters.</div>
+                        <div class="news-meta">
+                            <span>3 hours ago</span>
+                            <span class="impact-badge high">High</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image europe">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Europe Economy</div>
+                        <div class="news-title">EU Trade Deal Negotiations Begin</div>
+                        <div class="news-description">European Union and major trading partners initiate new trade
+                            agreement discussions focused on digital services and green technology exports.</div>
+                        <div class="news-meta">
+                            <span>5 hours ago</span>
+                            <span class="impact-badge">Medium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image europe">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Europe Economy</div>
+                        <div class="news-title">Green Energy Investments Surge in EU</div>
+                        <div class="news-description">Investment in renewable energy across European Union reaches
+                            record levels as member states accelerate decarbonization targets.</div>
+                        <div class="news-meta">
+                            <span>7 hours ago</span>
+                            <span class="impact-badge">Medium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- World Economy Section -->
+        <div class="region-section">
+            <div class="section-header">
+                <i class="fas fa-globe"></i>
+                <h2 style="font-size: 20px; font-weight: 600;">World Economy</h2>
+            </div>
+
+            <div class="indicators-grid">
+                <div class="indicator-card">
+                    <div class="indicator-name">Oil (WTI) - USD/bbl</div>
+                    <div class="indicator-value">$78.45</div>
+                    <div class="indicator-change positive">
+                        <i class="fas fa-arrow-up"></i> +2.1% This week
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">Gold - USD/oz</div>
+                    <div class="indicator-value">$2,042.50</div>
+                    <div class="indicator-change positive">
+                        <i class="fas fa-arrow-up"></i> +1.85% This week
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">Bitcoin</div>
+                    <div class="indicator-value">$98,750</div>
+                    <div class="indicator-change positive">
+                        <i class="fas fa-arrow-up"></i> +15.3% This month
+                    </div>
+                </div>
+
+                <div class="indicator-card">
+                    <div class="indicator-name">USD/EUR Exchange</div>
+                    <div class="indicator-value">1.0845</div>
+                    <div class="indicator-change negative">
+                        <i class="fas fa-arrow-down"></i> -0.42% This week
+                    </div>
+                </div>
+            </div>
+
+            <div class="news-container">
+                <div class="news-card">
+                    <div class="news-image world">
+                        <i class="fas fa-ship"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Global Trade</div>
+                        <div class="news-title">Global Supply Chain Stabilizes</div>
+                        <div class="news-description">Shipping costs and delivery times normalize as supply chain
+                            disruptions ease worldwide, benefiting manufacturing sectors across regions.</div>
+                        <div class="news-meta">
+                            <span>4 hours ago</span>
+                            <span class="impact-badge">Medium</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image world">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Global Markets</div>
+                        <div class="news-title">Asian Markets Rally on Growth Prospects</div>
+                        <div class="news-description">Major Asian indices surge on positive economic indicators and
+                            increased consumer spending across the region's largest economies.</div>
+                        <div class="news-meta">
+                            <span>5 hours ago</span>
+                            <span class="impact-badge high">High</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image world">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">Technology</div>
+                        <div class="news-title">AI Regulation Framework Emerges Globally</div>
+                        <div class="news-description">Countries worldwide begin coordinating on artificial intelligence
+                            governance standards to ensure safety while promoting innovation and competitiveness.</div>
+                        <div class="news-meta">
+                            <span>6 hours ago</span>
+                            <span class="impact-badge high">High</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2026 StonkStock. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of
+                Service</a> | <a href="#">Contact Us</a></p>
+    </div>
+
+    // Auth check + logout + navbar init handled by stock-update.js
+    <script src="stock-update.js"></script>
+</body>
+
+</html>

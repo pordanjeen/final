@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Wallet - StonkStock</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="inup.css">
+    <link rel="stylesheet" href="style-custom.css">
+    <style>
+        :root {
+            --green: #2da44e;
+            --gold: #d4af37;
+            --red: #d32f2f;
+            --brown: #6d4c41;
+            --silver: #c0c0c0;
+            --dark: #1a1a1a;
+            --light: #fafafa;
+            --card: #ffffff;
+            --border: #e0e0e0;
+            --text-main: #1a1a1a;
+            --text-secondary: #666666;
+            --link: #1976d2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(45, 164, 78, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 20%, rgba(211, 47, 47, 0.1) 0%, transparent 50%);
+            animation: shimmer 15s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin: -20px -20px 0 -20px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--link);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto 0;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            letter-spacing: -1px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 32px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: 10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .balance-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .balance-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .balance-info {
+            font-size: 12px;
+        }
+
+        .balance-info-label {
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .balance-info-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Currency Cards Grid */
+        .currency-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .currency-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .currency-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+            border-color: var(--link);
+        }
+
+        .currency-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .currency-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .currency-balance {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            animation: slideUp 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s both;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .action-btn-main {
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: buttonBounce 0.6s ease backwards;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-btn-main:nth-child(1) {
+            animation-delay: 0.25s;
+        }
+
+        .action-btn-main:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .action-btn-main:nth-child(3) {
+            animation-delay: 0.35s;
+        }
+
+        .action-btn-main:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes buttonBounce {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+
+            70% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .action-btn-main:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn-main:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-deposit {
+            background: linear-gradient(135deg, #2da44e 0%, #1f8a38 100%);
+            color: white;
+        }
+
+        .btn-withdraw {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            color: white;
+        }
+
+        .btn-transfer {
+            background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+            color: white;
+        }
+
+        .btn-exchange {
+            background: linear-gradient(135deg, #d4af37 0%, #8b6f47 100%);
+            color: white;
+        }
+
+        .currency-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--link);
+            color: white;
+            border-color: var(--link);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--link);
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--link);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background: #0857b8;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        /* Transaction History */
+        .transaction-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            grid-column: 1 / -1;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .transaction-item:hover {
+            background: var(--bg);
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .transaction-icon.deposit {
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .transaction-icon.withdraw {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-type {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .transaction-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .transaction-amount {
+            text-align: right;
+        }
+
+        .amount-deposit {
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .amount-withdraw {
+            color: var(--red);
+            font-weight: 600;
+        }
+
+        .amount-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .balance-amount {
+                font-size: 32px;
+            }
+
+            .currency-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .transaction-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .transaction-amount {
+                align-self: flex-end;
+                margin-top: 8px;
+            }
+        }
+
+        /* Section Header */
+        .section-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        /* Currency Section */
+        .currency-section {
+            grid-column: 1 / -1;
+            margin-top: 32px;
+        }
+
+        /* Transaction Section */
+        .transaction-section {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-top: 32px;
+        }
+
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--dark);
+        }
+
+        .section-title i {
+            color: var(--gold);
+            font-size: 24px;
+        }
+
+        /* Transaction Filter */
+        .transaction-filter {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border: 2px solid var(--border);
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, var(--green) 0%, #1f8a38 100%);
+            color: white;
+            border-color: var(--green);
+        }
+
+        /* Transaction List */
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .transaction-item:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateX(4px);
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .transaction-icon.deposit {
+            background: rgba(45, 164, 78, 0.15);
+            color: var(--green);
+        }
+
+        .transaction-icon.withdraw {
+            background: rgba(211, 47, 47, 0.15);
+            color: var(--red);
+        }
+
+        .transaction-icon.transfer {
+            background: rgba(25, 118, 210, 0.15);
+            color: var(--link);
+        }
+
+        .transaction-icon.exchange {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold);
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-type {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: var(--dark);
+        }
+
+        .transaction-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .transaction-amount {
+            text-align: right;
+        }
+
+        .amount-value {
+            font-weight: 800;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .amount-deposit {
+            color: var(--green);
+        }
+
+        .amount-withdraw {
+            color: var(--red);
+        }
+
+        .amount-transfer {
+            color: var(--link);
+        }
+
+        .amount-exchange {
+            color: var(--gold);
+        }
+
+        .amount-date {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body class="bg-cash">
+    <!-- Navbar -->
+    <nav class="main-nav glass-effect">
+        <a href="home.html" class="nav-logo"><i class="fas fa-chart-line"></i> StonkStock</a>
+        <div class="nav-links">
+            <a href="home.html" class="nav-item"><i class="fas fa-home"></i> Home</a>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+            <a href="trading.html" class="nav-item"><i class="fas fa-exchange-alt"></i> Trading</a>
+            <a href="cash.html" class="nav-item"><i class="fas fa-wallet"></i> Wallet</a>
+        </div>
+        <div class="nav-user">
+            <span id="display-username"></span>
+            <button onclick="handleLogout()" class="btn-logout-minimal"><i class="fas fa-sign-out-alt"></i>
+                Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <div class="page-title">
+                💎 Premium Wallet
+            </div>
+            <div class="page-subtitle">Manage your global assets with ease</div>
+        </div>
+
+        <div class="grid">
+            <!-- Main Balance Card -->
+            <div class="balance-card">
+                <div class="balance-top">
+                    <div class="balance-label">Total Portfolio Value</div>
+                    <div class="balance-status">
+                        <i class="fas fa-circle" style="color: #2da44e; margin-right: 6px; font-size: 8px;"></i> ACTIVE
+                    </div>
+                </div>
+                <div class="balance-content">
+                    <h1 class="balance-amount animate-num" id="totalBalance" data-target="18950.75">$0</h1>
+                    <div class="balance-bottom">
+                        <div style="flex: 1;">
+                            <div class="balance-info">
+                                <div class="balance-info-label">Available to Trade</div>
+                                <div class="balance-info-value" id="availableBalance">$15,250.50</div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="balance-info">
+                                <div class="balance-info-label">In Active Orders</div>
+                                <div class="balance-info-value" id="lockedBalance">$3,700.25</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn-main btn-deposit" onclick="openModal('depositModal')">
+                    <i class="fas fa-arrow-down"></i> Deposit Funds
+                </button>
+                <button class="action-btn-main btn-withdraw" onclick="openModal('withdrawModal')">
+                    <i class="fas fa-arrow-up"></i> Withdraw Cash
+                </button>
+                <button class="action-btn-main btn-transfer" onclick="openModal('transferModal')">
+                    <i class="fas fa-exchange-alt"></i> Transfer Between Accounts
+                </button>
+                <button class="action-btn-main btn-exchange" onclick="openModal('exchangeModal')">
+                    <i class="fas fa-coins"></i> Exchange Currency
+                </button>
+            </div>
+        </div>
+
+        <!-- Currency Accounts -->
+        <div class="currency-section">
+            <div class="section-header">
+                💱 Multi-Currency Accounts (4 Active)
+            </div>
+            <div class="currency-cards-grid">
+                <div class="currency-card">
+                    <div class="currency-icon">💵</div>
+                    <div class="currency-name">US Dollar</div>
+                    <div class="currency-code">USD</div>
+                    <div class="currency-balance" id="usdBalance">$10,250.50</div>
+                    <div class="currency-actions">
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('depositModal', 'USD')">Deposit</button>
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('withdrawModal', 'USD')">Withdraw</button>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="currency-icon">€</div>
+                    <div class="currency-name">Euro</div>
+                    <div class="currency-code">EUR</div>
+                    <div class="currency-balance" id="eurBalance">€3,250.25</div>
+                    <div class="currency-actions">
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('depositModal', 'EUR')">Deposit</button>
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('withdrawModal', 'EUR')">Withdraw</button>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="currency-icon">฿</div>
+                    <div class="currency-name">Thai Baht</div>
+                    <div class="currency-code">THB</div>
+                    <div class="currency-balance" id="thbBalance">฿125,450</div>
+                    <div class="currency-actions">
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('depositModal', 'THB')">Deposit</button>
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('withdrawModal', 'THB')">Withdraw</button>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="currency-icon">¥</div>
+                    <div class="currency-name">Japanese Yen</div>
+                    <div class="currency-code">JPY</div>
+                    <div class="currency-balance" id="jpyBalance">¥1,525,000</div>
+                    <div class="currency-actions">
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('depositModal', 'JPY')">Deposit</button>
+                        <button class="action-btn"
+                            onclick="openModalWithCurrency('withdrawModal', 'JPY')">Withdraw</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction History -->
+        <div class="transaction-section">
+            <div class="transaction-header">
+                <div class="section-title">
+                    <i class="fas fa-history"></i> Transaction History
+                </div>
+                <div class="transaction-filter">
+                    <button class="filter-tab active" onclick="filterTransactions('all', this)">All</button>
+                    <button class="filter-tab" onclick="filterTransactions('deposit', this)">Deposits</button>
+                    <button class="filter-tab" onclick="filterTransactions('withdraw', this)">Withdrawals</button>
+                    <button class="filter-tab" onclick="filterTransactions('transfer', this)">Transfers</button>
+                </div>
+            </div>
+
+            <div class="transaction-list" id="transactionList">
+                <!-- Transactions populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ MODALS ============ -->
+
+    <!-- Deposit Modal -->
+    <div class="modal" id="depositModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('depositModal')">&times;</button>
+            <div class="modal-header">
+                <i class="fas fa-arrow-down"></i> Deposit Funds
+            </div>
+            <div class="modal-subtitle">Add money to your trading account</div>
+
+            <div class="form-group">
+                <label class="form-label">Select Currency</label>
+                <select class="form-select" id="depositCurrency" onchange="updateDepositAmount()">
+                    <option value="">Select...</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="THB">THB - Thai Baht</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input type="number" class="form-input" placeholder="Enter amount" id="depositAmount" min="10"
+                    step="0.01">
+                <div class="form-hint" id="depositHint"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Payment Method</label>
+                <select class="form-select">
+                    <option>Bank Transfer</option>
+                    <option>Credit Card</option>
+                    <option>Debit Card</option>
+                    <option>E-Wallet / Digital Payment</option>
+                    <option>Cryptocurrency</option>
+                </select>
+            </div>
+
+            <button class="submit-btn" onclick="processDeposit()">
+                <i class="fas fa-check-circle"></i> Confirm Deposit
+            </button>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdrawModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('withdrawModal')">&times;</button>
+            <div class="modal-header">
+                <i class="fas fa-arrow-up"></i> Withdraw Cash
+            </div>
+            <div class="modal-subtitle">Transfer money out of your account</div>
+
+            <div class="form-group">
+                <label class="form-label">Select Currency</label>
+                <select class="form-select" id="withdrawCurrency" onchange="updateWithdrawAmount()">
+                    <option value="">Select...</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="THB">THB - Thai Baht</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input type="number" class="form-input" placeholder="Enter amount" id="withdrawAmount" min="10"
+                    step="0.01">
+                <div class="form-hint" id="withdrawHint"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Withdrawal To</label>
+                <select class="form-select">
+                    <option>Primary Bank Account (••••1234)</option>
+                    <option>Secondary Bank Account (••••5678)</option>
+                    <option>E-Wallet Account</option>
+                    <option>Cryptocurrency Wallet</option>
+                </select>
+            </div>
+
+            <button class="submit-btn withdraw" onclick="processWithdraw()">
+                <i class="fas fa-check-circle"></i> Confirm Withdrawal
+            </button>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal" id="transferModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('transferModal')">&times;</button>
+            <div class="modal-header">
+                <i class="fas fa-exchange-alt"></i> Transfer Between Accounts
+            </div>
+            <div class="modal-subtitle">Move funds between your accounts</div>
+
+            <div class="form-group">
+                <label class="form-label">From Account</label>
+                <select class="form-select">
+                    <option>USD - $10,250.50</option>
+                    <option>EUR - €3,250.25</option>
+                    <option>THB - ฿125,450</option>
+                    <option>JPY - ¥1,525,000</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">To Account</label>
+                <select class="form-select">
+                    <option>EUR - €3,250.25</option>
+                    <option>USD - $10,250.50</option>
+                    <option>THB - ฿125,450</option>
+                    <option>JPY - ¥1,525,000</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input type="number" class="form-input" placeholder="Enter amount" min="10" step="0.01">
+            </div>
+
+            <button class="submit-btn" onclick="processTransfer()">
+                <i class="fas fa-check-circle"></i> Confirm Transfer
+            </button>
+        </div>
+    </div>
+
+    <!-- Exchange Modal -->
+    <div class="modal" id="exchangeModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('exchangeModal')">&times;</button>
+            <div class="modal-header">
+                <i class="fas fa-coins"></i> Currency Exchange
+            </div>
+            <div class="modal-subtitle">Instantly convert between currencies</div>
+
+            <div class="form-group">
+                <label class="form-label">From Currency</label>
+                <select class="form-select" id="exchangeFromCurrency" onchange="calculateExchange()">
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="THB">THB - Thai Baht</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input type="number" class="form-input" placeholder="Enter amount" id="exchangeAmount" min="1"
+                    step="0.01" onchange="calculateExchange()">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">To Currency</label>
+                <select class="form-select" id="exchangeToCurrency" onchange="calculateExchange()">
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="THB">THB - Thai Baht</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                </select>
+            </div>
+
+            <div style="background: #f5f5f5; padding: 16px; border-radius: 10px; margin-bottom: 20px;">
+                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">You will receive</div>
+                <div style="font-size: 24px; font-weight: 800; color: var(--green);" id="exchangeResult">-</div>
+                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">Exchange rate: 1 USD =
+                    <span id="exchangeRate">1.0</span> to your currency (0.5% fee)</div>
+            </div>
+
+            <button class="submit-btn" onclick="processExchange()">
+                <i class="fas fa-check-circle"></i> Confirm Exchange
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ============ DATA & STATE ============
+        let balances = {
+            USD: 10250.50,
+            EUR: 3250.25,
+            THB: 125450,
+            JPY: 1525000
+        };
+
+        let transactions = [
+            { type: 'deposit', currency: 'USD', amount: 5000, method: 'Bank Transfer', date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), status: 'Completed' },
+            { type: 'withdraw', currency: 'EUR', amount: 1500, method: 'Bank Account', date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), status: 'Completed' },
+            { type: 'deposit', currency: 'USD', amount: 2500, method: 'Credit Card', date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), status: 'Completed' },
+            { type: 'exchange', currency: 'USD', toCurrency: 'THB', amount: 1000, received: 35500, date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), status: 'Completed' },
+            { type: 'transfer', currency: 'USD', toCurrency: 'EUR', amount: 500, date: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000), status: 'Completed' }
+        ];
+
+        const exchangeRates = {
+            'USD-EUR': 0.92,
+            'EUR-USD': 1.09,
+            'USD-THB': 35.5,
+            'THB-USD': 0.028,
+            'USD-JPY': 150,
+            'JPY-USD': 0.0067,
+            'EUR-THB': 38.6,
+            'THB-EUR': 0.026,
+            'EUR-JPY': 163,
+            'JPY-EUR': 0.0061,
+        };
+
+        // ============ FUNCTIONS ============
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function openModalWithCurrency(modalId, currency) {
+            openModal(modalId);
+            if (modalId === 'depositModal') {
+                document.getElementById('depositCurrency').value = currency;
+                updateDepositAmount();
+            } else if (modalId === 'withdrawModal') {
+                document.getElementById('withdrawCurrency').value = currency;
+                updateWithdrawAmount();
+            }
+        }
+
+        function updateDepositAmount() {
+            const currency = document.getElementById('depositCurrency').value;
+            const hint = document.getElementById('depositHint');
+            if (currency) {
+                hint.textContent = `Current balance: ${balances[currency].toLocaleString()} ${currency}`;
+            }
+        }
+
+        function updateWithdrawAmount() {
+            const currency = document.getElementById('withdrawCurrency').value;
+            const hint = document.getElementById('withdrawHint');
+            if (currency) {
+                hint.textContent = `Available to withdraw: ${balances[currency].toLocaleString()} ${currency}`;
+            }
+        }
+
+        function calculateExchange() {
+            const from = document.getElementById('exchangeFromCurrency').value;
+            const to = document.getElementById('exchangeToCurrency').value;
+            const amount = parseFloat(document.getElementById('exchangeAmount').value) || 0;
+
+            if (amount <= 0) {
+                document.getElementById('exchangeResult').textContent = '-';
+                return;
+            }
+
+            const rateKey = `${from}-${to}`;
+            const rate = exchangeRates[rateKey] || 1;
+            const result = amount * rate * 0.995; // 0.5% fee
+
+            document.getElementById('exchangeResult').textContent = result.toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' ' + to;
+            document.getElementById('exchangeRate').textContent = rate.toFixed(4);
+        }
+
+        function processDeposit() {
+            const currency = document.getElementById('depositCurrency').value;
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+
+            if (!currency || !amount || amount <= 0) {
+                alert('❌ Please fill in all fields correctly');
+                return;
+            }
+
+            balances[currency] += amount;
+            transactions.unshift({
+                type: 'deposit',
+                currency: currency,
+                amount: amount,
+                method: document.querySelector('#depositModal .form-select').value,
+                date: new Date(),
+                status: 'Completed'
+            });
+
+            updateUI();
+            closeModal('depositModal');
+            document.getElementById('depositCurrency').value = '';
+            document.getElementById('depositAmount').value = '';
+            alert(`✅ Deposit successful!\n\n${amount} ${currency} has been added to your account.`);
+        }
+
+        function processWithdraw() {
+            const currency = document.getElementById('withdrawCurrency').value;
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+
+            if (!currency || !amount || amount <= 0) {
+                alert('❌ Please fill in all fields correctly');
+                return;
+            }
+
+            if (balances[currency] < amount) {
+                alert('❌ Insufficient balance in ' + currency + ' account');
+                return;
+            }
+
+            balances[currency] -= amount;
+            transactions.unshift({
+                type: 'withdraw',
+                currency: currency,
+                amount: amount,
+                method: 'Bank Account',
+                date: new Date(),
+                status: 'Processing'
+            });
+
+            updateUI();
+            closeModal('withdrawModal');
+            document.getElementById('withdrawCurrency').value = '';
+            document.getElementById('withdrawAmount').value = '';
+            alert(`✅ Withdrawal initiated!\n\n${amount} ${currency} will be sent to your bank account.\nETA: 1-3 business days`);
+        }
+
+        function processTransfer() {
+            alert('✅ Transfer feature coming soon!\n\nYou can manually convert currencies using the Exchange option.');
+        }
+
+        function processExchange() {
+            const from = document.getElementById('exchangeFromCurrency').value;
+            const to = document.getElementById('exchangeToCurrency').value;
+            const amount = parseFloat(document.getElementById('exchangeAmount').value);
+
+            if (!amount || amount <= 0) {
+                alert('❌ Please enter a valid amount');
+                return;
+            }
+
+            if (balances[from] < amount) {
+                alert('❌ Insufficient ' + from + ' balance');
+                return;
+            }
+
+            const rateKey = `${from}-${to}`;
+            const rate = exchangeRates[rateKey] || 1;
+            const received = amount * rate * 0.995;
+
+            balances[from] -= amount;
+            balances[to] += received;
+
+            transactions.unshift({
+                type: 'exchange',
+                currency: from,
+                toCurrency: to,
+                amount: amount,
+                received: received,
+                date: new Date(),
+                status: 'Completed'
+            });
+
+            updateUI();
+            closeModal('exchangeModal');
+            document.getElementById('exchangeAmount').value = '';
+            alert(`✅ Exchange successful!\n\nYou exchanged ${amount} ${from} for ${received.toFixed(2)} ${to}`);
+        }
+
+        function filterTransactions(type) {
+            renderTransactions(type);
+        }
+
+        function renderTransactions(filter = 'all') {
+            const container = document.getElementById('transactionList');
+            let filtered = transactions;
+
+            if (filter !== 'all') {
+                filtered = transactions.filter(t => t.type === filter);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>No transactions yet</p>
+                </div>
+            `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(tx => {
+                const icons = {
+                    deposit: 'fa-arrow-down',
+                    withdraw: 'fa-arrow-up',
+                    transfer: 'fa-exchange-alt',
+                    exchange: 'fa-coins'
+                };
+
+                const amountClass = {
+                    deposit: 'amount-deposit',
+                    withdraw: 'amount-withdraw',
+                    transfer: 'amount-transfer',
+                    exchange: 'amount-exchange'
+                };
+
+                let amountText = '';
+                if (tx.type === 'exchange') {
+                    amountText = `${tx.amount} ${tx.currency} → ${tx.received.toFixed(2)} ${tx.toCurrency}`;
+                } else if (tx.type === 'transfer') {
+                    amountText = `${tx.amount} ${tx.currency} to ${tx.toCurrency}`;
+                } else {
+                    amountText = `${tx.type === 'deposit' ? '+' : '-'}${tx.amount} ${tx.currency}`;
+                }
+
+                return `
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon ${tx.type}">
+                            <i class="fas ${icons[tx.type]}"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-type">${tx.type.charAt(0).toUpperCase() + tx.type.slice(1)}${tx.method ? ' - ' + tx.method : ''}</div>
+                            <div class="transaction-time">${tx.status}</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount">
+                        <div class="amount-value ${amountClass[tx.type]}">${amountText}</div>
+                        <div class="amount-date">${tx.date.toLocaleDateString()}</div>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        function updateUI() {
+            // Update balances
+            document.getElementById('usdBalance').textContent = '$' + balances.USD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('eurBalance').textContent = '€' + balances.EUR.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('thbBalance').textContent = '฿' + balances.THB.toLocaleString(undefined, { minimumFractionDigits: 0 });
+            document.getElementById('jpyBalance').textContent = '¥' + balances.JPY.toLocaleString(undefined, { minimumFractionDigits: 0 });
+
+            // Update total
+            const total = balances.USD + (balances.EUR * 1.09) + (balances.THB * 0.028) + (balances.JPY * 0.0067);
+            document.getElementById('totalBalance').textContent = '$' + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Render transactions
+            renderTransactions('all');
+
+            // Save to localStorage
+            localStorage.setItem('stonkstock_balances', JSON.stringify(balances));
+            localStorage.setItem('stonkstock_transactions', JSON.stringify(transactions));
+        }
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize
+        window.addEventListener('load', function () {
+            const savedBalances = localStorage.getItem('stonkstock_balances');
+            const savedTransactions = localStorage.getItem('stonkstock_transactions');
+
+            if (savedBalances) balances = JSON.parse(savedBalances);
+            if (savedTransactions) transactions = JSON.parse(savedTransactions);
+
+            updateUI();
+        });
+    </script>
+    <script src="stock-update.js"></script>
+</body>
+
+</html>

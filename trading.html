@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading - StonkStock</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="inup.css">
+    <link rel="stylesheet" href="style-custom.css">
+    <style>
+        :root {
+            --bg: #f6f8fa;
+            --card-bg: #ffffff;
+            --border: #d0d7de;
+            --text-main: #24292f;
+            --text-secondary: #57606a;
+            --green: #2da44e;
+            --green-light: #dafbe1;
+            --red: #da3633;
+            --red-light: #ffebe6;
+            --link: #0969da;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(60px);
+            }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 2px solid var(--link);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--link);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: white;
+            animation: titleGlow 0.8s ease 0.2s both;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes titleGlow {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Stock Info Panel */
+        .stock-info {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            padding: 24px;
+            animation: panelSlideIn 0.8s ease 0.3s both;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stock-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(45, 164, 78, 0.1) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .stock-info>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes panelSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(20px, -20px);
+            }
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .stock-symbol {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .stock-name {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .stock-price {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 16px 0;
+            animation: priceSlide 0.8s ease 0.4s both;
+        }
+
+        @keyframes priceSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stock-change {
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-bottom: 20px;
+            animation: changeAppear 0.8s ease 0.45s both;
+        }
+
+        @keyframes changeAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stock-change.up {
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .stock-change.down {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .info-item {
+            padding: 12px 0;
+            animation: infoFade 0.6s ease backwards;
+        }
+
+        .info-item:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+
+        .info-item:nth-child(2) {
+            animation-delay: 0.55s;
+        }
+
+        .info-item:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .info-item:nth-child(4) {
+            animation-delay: 0.65s;
+        }
+
+        @keyframes infoFade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Trading Panel */
+        .trading-panel {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            padding: 24px;
+            animation: panelSlideIn 0.8s ease 0.4s both;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trading-panel::before {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(9, 105, 218, 0.1) 0%, transparent 70%);
+            animation: pulse 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .trading-panel>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .tab-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            padding: 12px;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: tabSlide 0.8s ease backwards;
+        }
+
+        .tab-btn:nth-child(1) {
+            animation-delay: 0.45s;
+        }
+
+        .tab-btn:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes tabSlide {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--green) 0%, #229741 100%);
+            color: white;
+            border-color: var(--green);
+            box-shadow: 0 4px 15px rgba(45, 164, 78, 0.3);
+            transform: scale(1.02);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: tabFadeIn 0.5s ease;
+        }
+
+        @keyframes tabFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            animation: formSlide 0.6s ease backwards;
+        }
+
+        .form-group:nth-child(1) {
+            animation-delay: 0.55s;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .form-group:nth-child(3) {
+            animation-delay: 0.65s;
+        }
+
+        .form-group:nth-child(4) {
+            animation-delay: 0.7s;
+        }
+
+        .form-group:nth-child(5) {
+            animation-delay: 0.75s;
+        }
+
+        @keyframes formSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--link);
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+            transform: scale(1.02);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .order-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .order-type-btn {
+            padding: 10px;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .order-type-btn.active {
+            background: var(--link);
+            color: white;
+            border-color: var(--link);
+            box-shadow: 0 4px 12px rgba(9, 105, 218, 0.2);
+        }
+
+        .order-type-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .currency-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .currency-btn {
+            padding: 10px;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            animation: currencyBounce 0.6s ease backwards;
+        }
+
+        .currency-btn:nth-child(1) {
+            animation-delay: 0.58s;
+        }
+
+        .currency-btn:nth-child(2) {
+            animation-delay: 0.63s;
+        }
+
+        .currency-btn:nth-child(3) {
+            animation-delay: 0.68s;
+        }
+
+        .currency-btn:nth-child(4) {
+            animation-delay: 0.73s;
+        }
+
+        @keyframes currencyBounce {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .currency-btn.active {
+            background: var(--link);
+            color: white;
+            border-color: var(--link);
+            box-shadow: 0 4px 12px rgba(9, 105, 218, 0.2);
+        }
+
+        .currency-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .calculate-box {
+            background: var(--bg);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            animation: boxAppear 0.8s ease 0.8s both;
+        }
+
+        @keyframes boxAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .calculate-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .calculate-row:last-child {
+            margin-bottom: 0;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: submitSlide 0.8s ease 0.85s both;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes submitSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn.buy {
+            background: linear-gradient(135deg, var(--green) 0%, #229741 100%);
+            color: white;
+        }
+
+        .submit-btn.sell {
+            background: linear-gradient(135deg, var(--red) 0%, #b02828 100%);
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-trading">
+    <!-- Navbar -->
+    <nav class="main-nav glass-effect">
+        <a href="home.html" class="nav-logo"><i class="fas fa-chart-line"></i> StonkStock</a>
+        <div class="nav-links">
+            <a href="home.html" class="nav-item"><i class="fas fa-home"></i> Home</a>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-pie"></i> Dashboard</a>
+            <a href="trading.html" class="nav-item"><i class="fas fa-exchange-alt"></i> Trading</a>
+            <a href="cash.html" class="nav-item"><i class="fas fa-wallet"></i> Wallet</a>
+        </div>
+        <div class="nav-user">
+            <span id="display-username"></span>
+            <button onclick="handleLogout()" class="btn-logout-minimal"><i class="fas fa-sign-out-alt"></i>
+                Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-title" id="pageTitle">Trading</div>
+
+        <div class="grid">
+            <!-- Stock Information -->
+            <div class="stock-info">
+                <div class="stock-header">
+                    <div>
+                        <div class="stock-symbol" id="stockSymbol">AAPL</div>
+                        <div class="stock-name" id="stockName">Apple Inc.</div>
+                    </div>
+                    <button onclick="toggleFavorite()"
+                        style="background: none; border: none; cursor: pointer; font-size: 24px; color: #ccc;"
+                        id="favoriteBtn">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+
+                <div class="stock-price" id="stockPrice">$195.42</div>
+                <div class="stock-change up" id="stockChange">↑ +2.45% Today</div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Market Cap</div>
+                        <div class="info-value">$3.2T</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">P/E Ratio</div>
+                        <div class="info-value">32.5</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">52W High</div>
+                        <div class="info-value">$210.34</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">52W Low</div>
+                        <div class="info-value">$168.25</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Dividend Yield</div>
+                        <div class="info-value">0.42%</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Volume</div>
+                        <div class="info-value">52.3M</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trading Panel -->
+            <div class="trading-panel">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('buy')">
+                        <i class="fas fa-arrow-down"></i> BUY
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('sell')">
+                        <i class="fas fa-arrow-up"></i> SELL
+                    </button>
+                </div>
+
+                <!-- BUY Tab -->
+                <div id="buy" class="tab-content active">
+                    <div class="form-group">
+                        <div class="form-label">Currency</div>
+                        <div class="currency-grid">
+                            <button class="currency-btn active" onclick="selectCurrency('USD', event)">USD</button>
+                            <button class="currency-btn" onclick="selectCurrency('EUR', event)">EUR</button>
+                            <button class="currency-btn" onclick="selectCurrency('THB', event)">THB</button>
+                            <button class="currency-btn" onclick="selectCurrency('JPY', event)">JPY</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Order Type</div>
+                        <div class="order-type-selector">
+                            <button class="order-type-btn active" onclick="selectOrderType('market', event)">Market
+                                Order</button>
+                            <button class="order-type-btn" onclick="selectOrderType('limit', event)">Limit
+                                Order</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="limitPriceGroup" style="display: none;">
+                        <label class="form-label">Limit Price</label>
+                        <input type="number" class="form-input" placeholder="Enter price" id="limitPrice">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Quantity (Shares)</label>
+                        <input type="number" class="form-input" placeholder="Enter quantity" id="buyQuantity" value="1"
+                            min="1">
+                    </div>
+
+                    <div class="calculate-box">
+                        <div class="calculate-row">
+                            <span>Price per Share:</span>
+                            <span id="pricePerShare">$195.42</span>
+                        </div>
+                        <div class="calculate-row">
+                            <span>Quantity:</span>
+                            <span id="quantityDisplay">1</span>
+                        </div>
+                        <div class="calculate-row">
+                            <span>Commission (0.5%):</span>
+                            <span id="commission">$0.98</span>
+                        </div>
+                        <div class="calculate-row">
+                            <span>Total Cost:</span>
+                            <span id="totalCost">$196.40</span>
+                        </div>
+                    </div>
+
+                    <button class="submit-btn buy" onclick="submitOrder('buy')">
+                        <i class="fas fa-credit-card"></i> Place Buy Order
+                    </button>
+                </div>
+
+                <!-- SELL Tab -->
+                <div id="sell" class="tab-content">
+                    <div class="form-group">
+                        <div class="form-label">Currency</div>
+                        <div class="currency-grid">
+                            <button class="currency-btn active" onclick="selectCurrency('USD', event)">USD</button>
+                            <button class="currency-btn" onclick="selectCurrency('EUR', event)">EUR</button>
+                            <button class="currency-btn" onclick="selectCurrency('THB', event)">THB</button>
+                            <button class="currency-btn" onclick="selectCurrency('JPY', event)">JPY</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label">Order Type</div>
+                        <div class="order-type-selector">
+                            <button class="order-type-btn active" onclick="selectOrderType('market', event)">Market
+                                Order</button>
+                            <button class="order-type-btn" onclick="selectOrderType('limit', event)">Limit
+                                Order</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display: none;" id="sellLimitPriceGroup">
+                        <label class="form-label">Limit Price</label>
+                        <input type="number" class="form-input" placeholder="Enter price" id="sellLimitPrice">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Quantity (Shares)</label>
+                        <input type="number" class="form-input" placeholder="Enter quantity" id="sellQuantity" value="1"
+                            min="1">
+                    </div>
+
+                    <div class="calculate-box">
+                        <div class="calculate-row">
+                            <span>Price per Share:</span>
+                            <span id="sellPricePerShare">$195.42</span>
+                        </div>
+                        <div class="calculate-row">
+                            <span>Quantity:</span>
+                            <span id="sellQuantityDisplay">1</span>
+                        </div>
+                        <div class="calculate-row">
+                            <span>Commission (0.5%):</span>
+                            <span id="sellCommission">$0.98</span>
+                        </div>
+                        <div class="calculate-row">
+                            <span>Net Proceeds:</span>
+                            <span id="netProceeds">$194.44</span>
+                        </div>
+                    </div>
+
+                    <button class="submit-btn sell" onclick="submitOrder('sell')">
+                        <i class="fas fa-hand-holding-usd"></i> Place Sell Order
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Advice Section -->
+        <div class="advice-section">
+            <div class="advice-title">
+                <i class="fas fa-lightbulb"></i> Professional Analysis & Advice
+            </div>
+
+            <div class="advice-card positive">
+                <div class="advice-label">💚 Analyst Rating</div>
+                <div class="advice-text"><strong>BUY</strong> - 12 out of 15 analysts recommend buying this stock</div>
+            </div>
+
+            <div class="advice-card">
+                <div class="advice-label">🎯 Price Target</div>
+                <div class="advice-text">12-month price target: $220 (12.6% upside potential)</div>
+            </div>
+
+            <div class="advice-card positive">
+                <div class="advice-label">📈 Growth Prospects</div>
+                <div class="advice-text">Strong Q4 earnings, expanding into AI services, positive guidance for 2026
+                </div>
+            </div>
+
+            <div class="advice-card">
+                <div class="advice-label">⚠️ Risk Factors</div>
+                <div class="advice-text">Market volatility, regulatory concerns in tech sector, currency fluctuations
+                </div>
+            </div>
+
+            <div class="advice-card positive">
+                <div class="advice-label">✅ Expert Recommendation</div>
+                <div class="advice-text"><strong>Hold for long-term</strong> - Suitable for growth portfolios. Consider
+                    Dollar-Cost Averaging for best results.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCurrency = 'USD';
+        let currentOrderType = 'market';
+
+        // Get symbol from URL
+        const params = new URLSearchParams(window.location.search);
+        const symbol = params.get('symbol') || 'AAPL';
+
+        const stockData = {
+            'AAPL': { name: 'Apple Inc.', price: 195.42, change: 2.45 },
+            'MSFT': { name: 'Microsoft Corp.', price: 412.89, change: 1.82 },
+            'GOOGL': { name: 'Alphabet Inc.', price: 142.56, change: -0.95 },
+            'TSLA': { name: 'Tesla Inc.', price: 248.67, change: 3.21 },
+            'NVDA': { name: 'NVIDIA Corp.', price: 875.43, change: 5.82 }
+        };
+
+        const exchangeRates = {
+            'USD': 1,
+            'EUR': 0.92,
+            'THB': 35.5,
+            'JPY': 149.5
+        };
+
+        window.addEventListener('load', function () {
+            updateStockInfo();
+            document.getElementById('buyQuantity').addEventListener('input', updateBuyCalculation);
+            document.getElementById('sellQuantity').addEventListener('input', updateSellCalculation);
+        });
+
+        // include stock price animation if present
+        if (typeof updateStockPrices === 'function') {
+            // keep prices moving on trading page
+            updateStockPrices();
+            setInterval(updateStockPrices, 3000);
+        }
+
+        function updateStockInfo() {
+            const data = stockData[symbol] || stockData['AAPL'];
+            document.getElementById('stockSymbol').textContent = symbol;
+            document.getElementById('stockName').textContent = data.name;
+            document.getElementById('stockPrice').textContent = '$' + data.price.toFixed(2);
+            document.getElementById('pageTitle').textContent = symbol + ' - Trading';
+
+            const changeColor = data.change >= 0 ? 'up' : 'down';
+            document.getElementById('stockChange').className = 'stock-change ' + changeColor;
+            document.getElementById('stockChange').textContent = (data.change >= 0 ? '↑ +' : '↓ ') + data.change.toFixed(2) + '% Today';
+
+            updateBuyCalculation();
+            updateSellCalculation();
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+        }
+
+        function selectOrderType(type, event) {
+            currentOrderType = type;
+            event.target.parentElement.querySelectorAll('.order-type-btn').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const limitPriceGroup = event.target.closest('.tab-content').querySelector('[id$="LimitPriceGroup"]');
+            if (limitPriceGroup) {
+                limitPriceGroup.style.display = type === 'limit' ? 'block' : 'none';
+            }
+        }
+
+        function selectCurrency(currency, event) {
+            currentCurrency = currency;
+            event.target.parentElement.querySelectorAll('.currency-btn').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function updateBuyCalculation() {
+            const data = stockData[symbol] || stockData['AAPL'];
+            const quantity = parseInt(document.getElementById('buyQuantity').value) || 1;
+            const price = data.price * exchangeRates[currentCurrency];
+            const subtotal = price * quantity;
+            const commission = subtotal * 0.005;
+            const total = subtotal + commission;
+
+            document.getElementById('pricePerShare').textContent = currentCurrency + ' ' + price.toFixed(2);
+            document.getElementById('quantityDisplay').textContent = quantity;
+            document.getElementById('commission').textContent = currentCurrency + ' ' + commission.toFixed(2);
+            document.getElementById('totalCost').textContent = currentCurrency + ' ' + total.toFixed(2);
+        }
+
+        function updateSellCalculation() {
+            const data = stockData[symbol] || stockData['AAPL'];
+            const quantity = parseInt(document.getElementById('sellQuantity').value) || 1;
+            const price = data.price * exchangeRates[currentCurrency];
+            const subtotal = price * quantity;
+            const commission = subtotal * 0.005;
+            const net = subtotal - commission;
+
+            document.getElementById('sellPricePerShare').textContent = currentCurrency + ' ' + price.toFixed(2);
+            document.getElementById('sellQuantityDisplay').textContent = quantity;
+            document.getElementById('sellCommission').textContent = currentCurrency + ' ' + commission.toFixed(2);
+            document.getElementById('netProceeds').textContent = currentCurrency + ' ' + net.toFixed(2);
+        }
+
+        function toggleFavorite() {
+            document.getElementById('favoriteBtn').style.color =
+                document.getElementById('favoriteBtn').style.color === 'rgb(45, 164, 78)' ? '#ccc' : '#2da44e';
+        }
+
+        function submitOrder(type) {
+            const quantity = parseInt(document.getElementById(type === 'buy' ? 'buyQuantity' : 'sellQuantity').value);
+            if (quantity <= 0) {
+                alert('Please enter a valid quantity');
+                return;
+            }
+
+            alert(`Order placed!\n\nType: ${type.toUpperCase()}\nSymbol: ${symbol}\nQuantity: ${quantity}\nCurrency: ${currentCurrency}\nOrder Type: ${currentOrderType.charAt(0).toUpperCase() + currentOrderType.slice(1)}`);
+        }
+    </script>
+    <script src="stock-update.js"></script>
+</body>
+
+</html>

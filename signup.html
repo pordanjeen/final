@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up · StonkStock</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style-custom.css">
+    <style>
+        :root { --bg: #f6f8fa; --border: #d0d7de; --green: #2da44e; --link: #0969da; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, sans-serif; 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse1 15s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -40%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse2 18s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes pulse1 {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.1) translate(-20px, 30px); }
+        }
+        
+        @keyframes pulse2 {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.05) translate(20px, -40px); }
+        }
+        
+        .logo { 
+            font-size: 60px; 
+            color: white; 
+            margin-bottom: 5px;
+            animation: spin 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.2));
+        }
+        
+        @keyframes spin {
+            0%, 100% { transform: rotateY(0) scale(1); }
+            50% { transform: rotateY(10deg) scale(1.05); }
+        }
+        
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: white;
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3) translateY(-40px); }
+            50% { opacity: 1; }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .auth-card { 
+            background: white; 
+            border: 1px solid var(--border); 
+            padding: 32px; 
+            width: 360px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideInUp 0.8s ease 0.2s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group { 
+            margin-bottom: 14px;
+            animation: fadeInLeft 0.6s ease backwards;
+        }
+        
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.35s; }
+        .form-group:nth-child(3) { animation-delay: 0.4s; }
+        .form-group:nth-child(4) { animation-delay: 0.45s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.55s; }
+        
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        label { 
+            display: block; 
+            font-size: 12px; 
+            margin-bottom: 6px; 
+            font-weight: 700;
+            color: #24292f;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input { 
+            width: 100%; 
+            padding: 11px 13px; 
+            border: 2px solid var(--border); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #f5576c;
+            box-shadow: 0 0 0 3px rgba(245,87,108,0.1);
+            transform: scale(1.02);
+        }
+        
+        .form-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+        }
+        
+        .form-row .form-group { 
+            margin-bottom: 0;
+        }
+        
+        .btn-signup { 
+            width: 100%; 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white; 
+            border: none; 
+            padding: 13px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 16px;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease 0.65s both;
+            box-shadow: 0 4px 15px rgba(245,87,108,0.3);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn-signup:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245,87,108,0.4);
+        }
+        
+        .btn-signup:active {
+            transform: translateY(-1px);
+        }
+        
+        .terms { 
+            font-size: 11px; 
+            color: #57606a; 
+            margin-top: 14px; 
+            line-height: 1.5;
+        }
+        
+        .terms a { 
+            color: #f5576c; 
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            animation: fadeIn 0.6s ease 0.6s both;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        input[type="checkbox"] {
+            width: 18px !important;
+            height: 18px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            margin-right: 10px !important;
+            cursor: pointer;
+        }
+        
+        label[for="rememberMeSignup"] {
+            margin: 0 !important;
+            cursor: pointer;
+            font-weight: 400;
+            font-size: 13px !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+        }
+        
+        .social-box { 
+            margin-top: 20px; 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 8px;
+            animation: socialAppear 0.8s ease 0.75s both;
+        }
+        
+        @keyframes socialAppear {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .social-btn { 
+            border: 2px solid var(--border); 
+            background: white; 
+            padding: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-align: center;
+            font-size: 18px;
+            color: #24292f;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover { 
+            border-color: #f5576c;
+            color: #f5576c;
+            transform: scale(1.15) rotate(-5deg);
+            box-shadow: 0 4px 12px rgba(245,87,108,0.2);
+        }
+        
+        .footer { 
+            margin-top: 22px; 
+            background: rgba(255,255,255,0.95); 
+            border: 1px solid var(--border); 
+            width: 360px; 
+            padding: 16px; 
+            text-align: center; 
+            border-radius: 12px; 
+            font-size: 14px;
+            animation: footerAppear 0.8s ease 0.85s both;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes footerAppear {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .divider { 
+            text-align: center; 
+            border-bottom: 1px solid var(--border); 
+            line-height: 0.1em; 
+            margin: 18px 0; 
+        }
+        
+        .divider span { 
+            background: white; 
+            padding: 0 10px; 
+            font-size: 12px; 
+            color: #57606a;
+            font-weight: 600;
+        }
+        
+        .home-link { 
+            text-align: center; 
+            margin-top: 30px;
+            animation: linkSlide 0.8s ease 0.9s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes linkSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .home-link a { 
+            color: white; 
+            text-decoration: none; 
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .home-link a:hover { 
+            text-decoration: underline;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">✨</div>
+    <h1>🎉 Join StonkStock Today</h1>
+    
+    <div class="auth-card">
+        <form id="signupForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" placeholder="John" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" placeholder="Doe" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="john@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="johndoe" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter secure password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="rememberMeSignup" name="rememberMeSignup">
+                <label for="rememberMeSignup">Remember me for quick login</label>
+            </div>
+            
+            <p class="terms">
+                By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. We'll send you occasional updates about new features.
+            </p>
+            
+            <button type="button" class="btn-signup" onclick="handleSignUp()">Create Account</button>
+        </form>
+        
+        <div class="divider"><span>Or continue with</span></div>
+        
+        <div class="social-box">
+            <div class="social-btn">👨‍💼</div>
+            <div class="social-btn">🔐</div>
+            <div class="social-btn">📊</div>
+            <div class="social-btn">💰</div>
+            <div class="social-btn">🌍</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Already have an account? <a href="inup.html" style="color: #f5576c; text-decoration: none; font-weight: 600;">Sign in instead</a>
+    </div>
+    
+    <div class="home-link">
+        <a href="../index.html">← Back to Home</a>
+    </div>
+</body>
+</html>
+
+<script>
+    // Load saved credentials on page load
+    window.addEventListener('load', function() {
+        const savedUsername = localStorage.getItem('stonkstock_username');
+        const rememberMe = localStorage.getItem('stonkstock_remember');
+
+        if (savedUsername && rememberMe === 'true') {
+            document.getElementById('username').value = savedUsername;
+            document.getElementById('rememberMeSignup').checked = true;
+        }
+    });
+
+    // Handle sign up
+    function handleSignUp() {
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const rememberMe = document.getElementById('rememberMeSignup').checked;
+
+        // Validation
+        if (!firstName || !lastName || !username || !password || !email) {
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        if (password.length < 6) {
+            alert('Password must be at least 6 characters');
+            return;
+        }
+
+        if (!email.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+
+        // Check if username already exists
+        let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+        if (accounts.find(a => a.username === username)) {
+            alert('Username already taken');
+            return;
+        }
+
+        if (accounts.find(a => a.email === email)) {
+            alert('Email already registered');
+            return;
+        }
+
+        // Store new account
+        accounts.push({ firstName, lastName, email, username, password });
+        localStorage.setItem('accounts', JSON.stringify(accounts));
+
+        // Store credentials if "Remember me" is checked
+        if (rememberMe) {
+            localStorage.setItem('stonkstock_username', username);
+            localStorage.setItem('stonkstock_password', password);
+            localStorage.setItem('stonkstock_remember', 'true');
+        }
+
+        // Store signup/login status
+        localStorage.setItem('stonkstock_loggedIn', 'true');
+        localStorage.setItem('stonkstock_user', username);
+        localStorage.setItem('stonkstock_email', email);
+        localStorage.setItem('balance', JSON.stringify({ USD: 10000, EUR: 8500, THB: 340000, JPY: 1100000 }));
+        localStorage.setItem('transactions', JSON.stringify([]));
+        
+        alert(`Welcome ${firstName}! Account created successfully. Redirecting to dashboard...`);
+        setTimeout(() => { window.location.href = '../index.html'; }, 1000);
+    }
+
+    // Allow Enter key to submit
+    document.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            handleSignUp();
+        }
+    });
+</script>

@@ -1,0 +1,363 @@
+:root {
+    --bg-color: #f6f8fa;
+    --card-bg: #ffffff;
+    --border-color: #d0d7de;
+    --text-main: #24292f;
+    --accent-green: #2da44e; /* StonkStock growth color */
+    --accent-hover: #2c974b;
+    --link-color: #0969da;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+    margin: 0;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.logo i {
+    font-size: 48px;
+    color: var(--text-main);
+}
+
+.logo h1 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+.auth-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 8px 24px rgba(140,149,159,0.2);
+}
+
+.auth-card h2 {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+form label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+form input {
+    width: 100%;
+    padding: 5px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+form input:focus {
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 3px rgba(9,105,218,0.3);
+}
+
+.label-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forgot-link {
+    font-size: 12px;
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.btn-primary {
+    width: 100%;
+    background-color: var(--accent-green);
+    color: white;
+    border: 1px solid rgba(27,31,36,0.15);
+    padding: 6px 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Social Logins */
+.divider {
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    line-height: 0.1em;
+    margin: 20px 0;
+}
+
+.divider span {
+    background: #fff;
+    padding: 0 10px;
+    font-size: 12px;
+    color: #57606a;
+}
+
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.social-btn {
+    border: 1px solid var(--border-color);
+    background: white;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+.social-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.footer-box {
+    margin-top: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 300px;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer-box a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+:root {
+    --primary-green: #00d084;
+    --dark-bg: #0d1117;
+    --text-gray: #484f58;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.split-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Left Side Visual */
+.auth-visual {
+    flex: 1;
+    background: url('https://images.unsplash.com/photo-1611974714658-75d4f14a19c0?auto=format&fit=crop&q=80&w=2070');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: none; /* Hidden on mobile */
+}
+
+@media (min-width: 992px) {
+    .auth-visual { display: block; }
+}
+
+.overlay {
+    background: linear-gradient(135deg, rgba(13, 17, 23, 0.9) 0%, rgba(0, 208, 132, 0.4) 100%);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 60px;
+}
+
+.visual-content h2 { font-size: 3rem; margin-bottom: 1rem; }
+.rocket-icon { font-size: 4rem; color: var(--primary-green); margin-bottom: 20px; }
+
+/* Right Side Form */
+.auth-form-side {
+    flex: 1;
+    background: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.logo-small {
+    text-decoration: none;
+    color: var(--dark-bg);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+h1 { font-size: 2rem; margin-bottom: 8px; color: var(--dark-bg); }
+.subtitle { color: var(--text-gray); margin-bottom: 30px; }
+
+/* Inputs & Buttons */
+.input-group { margin-bottom: 20px; }
+.input-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: #f6f8fa;
+}
+
+.btn-signup {
+    width: 100%;
+    background: var(--dark-bg);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-signup:hover { background: #21262d; }
+
+/* Social Pills */
+.social-auth-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.social-pill {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #d0d7de;
+    background: white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.divider {
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    line-height: 0.1em;
+    margin: 30px 0;
+}
+
+.divider span { background: #fff; padding: 0 10px; color: #888; font-size: 0.8rem; }
+
+
+/* 1. ปรับพื้นหลัง Body ให้ดูพรีเมียม */
+body {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    background-attachment: fixed;
+    color: white;
+}
+
+/* 2. สไตล์ Glassmorphism สำหรับ Card */
+.stock-card, .dashboard-card {
+    background: rgba(255, 255, 255, 0.05); /* โปร่งใส */
+    backdrop-filter: blur(10px); /* เบลอพื้นหลัง */
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stock-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 3. ปุ่มที่ดูทันสมัย */
+.btn-action {
+    background: linear-gradient(45deg, #2da44e, #3fb950);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* พื้นหลังหน้า Cash (เน้นความหรูหรา) */
+.bg-cash {
+    background: radial-gradient(circle at top right, #3d3215, #1a1a1a) !important;
+}
+
+/* พื้นหลังหน้า Trading (เน้นความจริงจัง) */
+.bg-trading {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
+}
+
+/* พื้นหลังหน้า Dashboard (Clean High-Tech) */
+.bg-dashboard {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%) !important;
+}
+
+/* เอฟเฟกต์การ์ดโปร่งใสสำหรับทุกหน้า */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* กะพริบเวลาราคาหุ้นเปลี่ยน */
+@keyframes flash-green {
+    0% { box-shadow: 0 0 5px #2da44e; }
+    50% { box-shadow: 0 0 20px #2da44e; }
+    100% { box-shadow: 0 0 5px #2da44e; }
+}
+@keyframes flash-red {
+    0% { box-shadow: 0 0 5px #da3633; }
+    50% { box-shadow: 0 0 20px #da3633; }
+    100% { box-shadow: 0 0 5px #da3633; }
+}
+
+.flash-green {
+    animation: flash-green 0.3s ease-in-out;
+}
+.flash-red {
+    animation: flash-red 0.3s ease-in-out;
+}

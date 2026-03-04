@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in · StonkStock</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style-custom.css">
+    <style>
+        :root { --bg: #f6f8fa; --border: #d0d7de; --green: #2da44e; --link: #0969da; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Floating background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -40%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float1 20s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float2 25s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(30px, -40px) rotate(180deg); }
+        }
+        
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-30px, 50px) rotate(-180deg); }
+        }
+        
+        .logo { 
+            font-size: 60px; 
+            color: white; 
+            margin-bottom: 10px;
+            animation: logoFloat 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.2));
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: white;
+            animation: slideDown 0.8s ease;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .auth-card { 
+            background: white; 
+            border: 1px solid var(--border); 
+            padding: 30px; 
+            width: 320px; 
+            border-radius: 16px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: cardSlideIn 0.8s ease 0.2s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        label { 
+            display: block; 
+            font-size: 13px; 
+            margin-bottom: 8px; 
+            font-weight: 700;
+            color: #24292f;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input { 
+            width: 100%; 
+            padding: 12px 14px; 
+            margin-bottom: 16px; 
+            border: 2px solid var(--border); 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            animation: inputSlide 0.6s ease backwards;
+        }
+        
+        input:nth-of-type(1) { animation-delay: 0.3s; }
+        input:nth-of-type(2) { animation-delay: 0.4s; }
+        
+        @keyframes inputSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(45,164,78,0.1);
+            transform: scale(1.02);
+        }
+        
+        .btn-login { 
+            width: 100%; 
+            background: linear-gradient(135deg, var(--green) 0%, #1f8a38 100%);
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: buttonFadeIn 0.6s ease 0.5s both;
+            box-shadow: 0 4px 15px rgba(45,164,78,0.3);
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        @keyframes buttonFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(45,164,78,0.4);
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            animation: checkSlide 0.6s ease 0.45s both;
+        }
+        
+        @keyframes checkSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        input[type="checkbox"] {
+            width: 18px !important;
+            height: 18px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            margin-right: 10px !important;
+            cursor: pointer;
+        }
+        
+        label[for="rememberMe"] {
+            margin: 0 !important;
+            cursor: pointer;
+            font-weight: 400;
+            font-size: 13px !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+        }
+        
+        .social-box { 
+            margin-top: 20px; 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 8px;
+            animation: socialFadeIn 0.8s ease 0.6s both;
+        }
+        
+        @keyframes socialFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .social-btn { 
+            border: 2px solid var(--border); 
+            background: white; 
+            padding: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-align: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            color: #24292f;
+        }
+        
+        .social-btn:hover {
+            border-color: var(--green);
+            color: var(--green);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 12px rgba(45,164,78,0.2);
+        }
+        
+        .footer { 
+            margin-top: 20px; 
+            background: rgba(255,255,255,0.95); 
+            border: 1px solid var(--border); 
+            width: 320px; 
+            padding: 16px; 
+            text-align: center; 
+            border-radius: 12px; 
+            font-size: 14px;
+            animation: footerSlide 0.8s ease 0.7s both;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes footerSlide {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .divider { 
+            text-align: center; 
+            border-bottom: 1px solid var(--border); 
+            line-height: 0.1em; 
+            margin: 18px 0; 
+        }
+        
+        .divider span { 
+            background: white; 
+            padding: 0 10px; 
+            font-size: 12px; 
+            color: #57606a;
+            font-weight: 600;
+        }
+        
+        .home-link { 
+            text-align: center; 
+            margin-top: 30px;
+            animation: homeLinkFade 0.8s ease 0.8s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes homeLinkFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .home-link a { 
+            color: white; 
+            text-decoration: none; 
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .home-link a:hover { 
+            text-decoration: underline;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="logo"><i class="fas fa-chart-line"></i></div>
+    <h1>🚀 Welcome Back to StonkStock</h1>
+    <div class="auth-card">
+        <form id="loginForm">
+            <label>Username or Email</label>
+            <input type="text" id="username" placeholder="Enter your username or email" required>
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <div class="checkbox-group">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Remember me for 30 days</label>
+            </div>
+            <button type="button" class="btn-login" onclick="handleSignIn()">Sign In</button>
+        </form>
+        <div class="divider"><span>or continue with</span></div>
+        <div class="social-box">
+            <div class="social-btn" title="Google"><i class="fab fa-google"></i></div>
+            <div class="social-btn" title="Apple"><i class="fab fa-apple"></i></div>
+            <div class="social-btn" title="Facebook"><i class="fab fa-facebook"></i></div>
+            <div class="social-btn" title="Line"><i class="fab fa-line"></i></div>
+            <div class="social-btn" title="Phone"><i class="fas fa-phone"></i></div>
+        </div>
+    </div>
+    <div class="footer">
+        New to StonkStock? <a href="signup.html" style="color: var(--green); text-decoration: none; font-weight: 700;">Create an account</a>.
+    </div>
+    <div class="home-link">
+        <a href="../index.html">← Back to Home</a>
+    </div>
+</body>
+</html>
+
+<script>
+    // Load saved credentials on page load
+    window.addEventListener('load', function() {
+        const savedUsername = localStorage.getItem('stonkstock_username');
+        const savedPassword = localStorage.getItem('stonkstock_password');
+        const rememberMe = localStorage.getItem('stonkstock_remember');
+
+        if (savedUsername && savedPassword && rememberMe === 'true') {
+            document.getElementById('username').value = savedUsername;
+            document.getElementById('password').value = savedPassword;
+            document.getElementById('rememberMe').checked = true;
+        }
+    });
+
+    // Handle sign in
+    function handleSignIn() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+
+        if (!username || !password) {
+            alert('Please enter username and password');
+            return;
+        }
+
+        // Store credentials if "Remember me" is checked
+        if (rememberMe) {
+            localStorage.setItem('stonkstock_username', username);
+            localStorage.setItem('stonkstock_password', password);
+            localStorage.setItem('stonkstock_remember', 'true');
+        } else {
+            // Clear stored credentials if unchecked
+            localStorage.removeItem('stonkstock_username');
+            localStorage.removeItem('stonkstock_password');
+            localStorage.setItem('stonkstock_remember', 'false');
+        }
+
+        // Store login status and redirect to dashboard
+        localStorage.setItem('stonkstock_loggedIn', 'true');
+        localStorage.setItem('stonkstock_user', username);
+        window.location.href = 'home.html';
+    }
+
+    // Allow Enter key to submit
+    document.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            handleSignIn();
+        }
+    });
+</script>
+
